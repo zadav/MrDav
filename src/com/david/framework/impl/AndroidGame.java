@@ -118,8 +118,7 @@ public abstract class AndroidGame extends Activity implements Game {
 
 	@Override
 	public Screen getCurrentScreen() {
-		// TODO Auto-generated method stub
-		return null;
+		return screen;
 	}
 
 	@Override
