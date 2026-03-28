@@ -5,79 +5,61 @@ import java.util.List;
 
 public class Snake {
 
-	public static final int UP = 0;
-	public static final int LEFT = 1;
-	public static final int DOWN = 2;
-	public static final int RIGHT = 3;
-	
-	public List<SnakePart> parts = new ArrayList<SnakePart>();
-	public int direction;
-	
-	public Snake() {
-		direction = UP;
-		parts.add(new SnakePart(5, 6));
-		parts.add(new SnakePart(5, 7));
-		parts.add(new SnakePart(5, 8));
-	}
-	
-	public void turnLeft(){
-		direction += 1;
-		if (direction > RIGHT)
-			direction = UP;
-	}
-	
-	public void turnRight(){
-		direction -=1;
-		if(direction< UP)
-			direction =RIGHT;
-	}
-	
-	public void eat(){
-		SnakePart end = parts.get(parts.size()-1);
-		parts.add(new SnakePart(end.x, end.y));
-	}
-	
-	public void advance(){
-		SnakePart head = parts.get(0);
-		
-		int len = parts.size() -1;
-		for(int i=len;i>0;i--){
-			SnakePart before = parts.get(i-1);
-			SnakePart part = parts.get(i);
-			part.x = before.x;
-			part.y = before.y;
-		}
-		
-		if(direction == UP)
-			head.y -= 1;
-		if(direction == LEFT)
-			head.x -= 1;
-		if(direction == DOWN)
-			head.y += 1;
-		if(direction == RIGHT)
-			head.x += 1;
-		
-		if(head.x > 9)
-			head.x = 0;
-		if(head.x < 0)
-			head.x =9;
-		if(head.y < 0)
-			head.y = 12;
-		if(head.y > 12)
-			head.y = 0;
-		
-	}
-	
-	public boolean checkBitten(){
-		int len = parts.size();
-		SnakePart head = parts.get(0);
-		
-		for(int i=1;i<len;i++){
-			SnakePart part = parts.get(i);
-			if(part.x == head.x && part.y == head.y)
-				return true;
-		}
-		return false;
-	}
+    public List<SnakePart> parts = new ArrayList<>();
+    public Direction direction;
 
+    public Snake() {
+        direction = Direction.UP;
+        parts.add(new SnakePart(5, 6));
+        parts.add(new SnakePart(5, 7));
+        parts.add(new SnakePart(5, 8));
+    }
+
+    public void turnLeft() {
+        direction = direction.turnLeft();
+    }
+
+    public void turnRight() {
+        direction = direction.turnRight();
+    }
+
+    public void eat() {
+        var tail = parts.get(parts.size() - 1);
+        parts.add(new SnakePart(tail.x(), tail.y()));
+    }
+
+    public void advance() {
+        var head = parts.get(0);
+        int newX = head.x();
+        int newY = head.y();
+
+        switch (direction) {
+            case UP    -> newY -= 1;
+            case LEFT  -> newX -= 1;
+            case DOWN  -> newY += 1;
+            case RIGHT -> newX += 1;
+        }
+
+        if (newX > 9)  newX = 0;
+        if (newX < 0)  newX = 9;
+        if (newY < 0)  newY = 12;
+        if (newY > 12) newY = 0;
+
+        var newParts = new ArrayList<SnakePart>(parts.size());
+        newParts.add(new SnakePart(newX, newY));
+        for (int i = 0; i < parts.size() - 1; i++) {
+            newParts.add(parts.get(i));
+        }
+        parts = newParts;
+    }
+
+    public boolean checkBitten() {
+        var head = parts.get(0);
+        for (int i = 1; i < parts.size(); i++) {
+            var part = parts.get(i);
+            if (part.x() == head.x() && part.y() == head.y())
+                return true;
+        }
+        return false;
+    }
 }
