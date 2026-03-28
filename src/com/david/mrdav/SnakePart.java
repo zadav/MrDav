@@ -1,12 +1,3 @@
 package com.david.mrdav;
 
-public class SnakePart {
-
-	public int x,y;
-	
-	public SnakePart(int x,int y) {
-		this.x = x;
-		this.y = y;
-	}
-
-}
+public record SnakePart(int x, int y) {}
